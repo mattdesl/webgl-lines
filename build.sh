@@ -1,0 +1,1 @@
+browserify $1/index.js | uglifyjs -cm > $1/bundle.js

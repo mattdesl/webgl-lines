@@ -49,14 +49,17 @@
   "devDependencies": {
     "babelify": "^5.0.3",
     "brfs": "^1.4.0",
+    "browserify": "^9.0.3",
     "budo": "^1.2.0",
     "open-url": "^2.0.2",
+    "uglify-js": "^2.4.16",
     "watchify": "git://github.com/mattdesl/watchify#fast"
   },
   "scripts": {
     "native-3d": "./dev.sh native-3d",
     "triangles-2d": "./dev.sh triangles-2d",
-    "expand-3d": "./dev.sh expand-3d"
+    "expand-3d": "./dev.sh expand-3d",
+    "build-all": "./build.sh native-3d && ./build.sh triangles-2d && ./build.sh expand-3d"
   },
   "keywords": [],
   "repository": {

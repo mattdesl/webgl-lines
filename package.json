@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "2d-context": "^1.2.0",
+    "adaptive-bezier-curve": "^1.0.3",
+    "array-pack-2d": "^0.1.0",
     "bunny": "^1.0.1",
     "canvas-fit": "^1.2.0",
     "color-style": "^1.0.0",
@@ -19,17 +21,23 @@
     "extrude-polyline": "^1.0.6",
     "garnish": "^2.1.0",
     "gl-basic-shader": "^1.2.2",
+    "gl-buffer": "^2.1.1",
     "gl-checker-background": "^1.0.0",
     "gl-geometry": "^1.0.3",
     "gl-mat4": "^1.1.2",
+    "gl-shader-core": "^2.2.0",
+    "gl-vao": "^1.2.0",
     "gl-vignette-background": "^1.0.4",
     "gl-wireframe": "^1.0.1",
+    "glslify": "^1.6.0",
+    "lodash.throttle": "^3.0.1",
     "marked": "^0.3.3",
     "minstache": "^1.2.0",
     "polyline-normals": "^2.0.2",
     "premultiplied-rgba": "^1.0.1",
     "quantize-vertices": "^1.0.2",
     "raf-loop": "^1.0.1",
+    "randf": "^1.0.0",
     "rescale-vertices": "^1.0.0",
     "teapot": "^1.0.0",
     "touches": "^1.0.3",
@@ -42,6 +50,7 @@
     "babelify": "^5.0.3",
     "brfs": "^1.4.0",
     "budo": "^1.2.0",
+    "open-url": "^2.0.2",
     "watchify": "git://github.com/mattdesl/watchify#fast"
   },
   "scripts": {
@@ -61,7 +70,8 @@
   "browserify": {
     "transform": [
       "babelify",
-      "brfs"
+      "brfs",
+      "glslify"
     ]
   }
 }

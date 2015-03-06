@@ -1,5 +1,7 @@
-const MAX_POINTS = 8, MIN_DIST = 10
+const MAX_POINTS = 8, MIN_DIST = 20
 const distance = require('vectors/dist')(2)
+const throttle = require('lodash.throttle')
+const random = require('randf')
 
 let stroke = require('extrude-polyline')({
   thickness: 20,
@@ -9,11 +11,11 @@ let stroke = require('extrude-polyline')({
 
 let context = require('../base')(render, {
   name: __dirname,
-  description: 'click to draw a line with triangles'
+  description: 'touch and drag to draw a line with triangles'
 })
 
 let canvas = context.canvas
-let path = []
+let path = [[40,105],[60,98],[84,100],[96,116],[111,133],[135,140],[153,130]]
 let colors = [
     '#4f4f4f',
     '#767676',
@@ -21,16 +23,13 @@ let colors = [
     '#d98a2d'
 ]
 
-let lastPosition = [0, 0]
+let lastPosition = path[path.length-1]
 
 function render(dt) {
   let { width, height } = canvas
   context.clearRect(0, 0, width, height)
 
-  let dpr = window.devicePixelRatio
   let mesh = stroke.build(path)
-  context.save()
-  context.scale(dpr, dpr)
   mesh.cells.forEach((cell, i) => {
     let [ f0, f1, f2 ] = cell
     let v0 = mesh.positions[f0],
@@ -43,14 +42,25 @@ function render(dt) {
     context.fillStyle = colors[i % colors.length]
     context.fill()
   })
-  context.restore()
 }
 
-require('touches')(window)
-  .on('start', addPoint)
-  .on('move', addPoint)
+let adder = throttle(addPoint, 30)
+let dragging = false
+
+require('touches')(window, { filtered: true })
+  .on('move', adder)
+  .on('start', () => { //clear path on click
+    path.length = 0
+    stroke.thickness = random(10, 30)
+    dragging = true
+  })
+  .on('end', () => {
+    dragging = false
+  })
 
 function addPoint(ev, position) {
+  if (!dragging)
+    return
   //limit our path by distance and capacity
   if (distance(position, lastPosition) < MIN_DIST)
     return

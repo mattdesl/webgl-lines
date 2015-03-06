@@ -9,19 +9,22 @@ const xtend = require('xtend')
 const marked = require('marked')
 const template = require('fs').readFileSync(`${__dirname}/template.hbs`, 'utf8')
 
+const DPR = window.devicePixelRatio
+
 module.exports = function(render, opt) {
   opt = opt || {}
 
-  let context = (opt.context === 'webgl' ? ContextWebGL : Context2D)(opt)
+  let isWebGL = opt.context === 'webgl'
+  let context = (isWebGL ? ContextWebGL : Context2D)(opt)
   let resize = () => {
-    fit(context.canvas, window, window.devicePixelRatio)
-    render(0)
+    fit(context.canvas, window, DPR)
+    renderRetina(0)
   }
 
   window.addEventListener('resize', resize, false)
   process.nextTick(resize)
   
-  let engine = loop(render)
+  let engine = loop(renderRetina)
 
   // window.addEventListener('mouseover', () => { engine.start() })
   // window.addEventListener('mouseout', () => { engine.stop() })
@@ -34,6 +37,25 @@ module.exports = function(render, opt) {
     document.body.appendChild(context.canvas)
     info(opt)
   })
+
+  function renderRetina(dt) {
+    if (!isWebGL) {
+      let { width, height } = context.canvas
+      context.clearRect(0, 0, width, height)
+      context.save()
+      context.scale(DPR, DPR)
+    } else {
+      let gl = context
+      let width = gl.drawingBufferWidth
+      let height = gl.drawingBufferHeight
+      gl.clearColor(0.8,0.8,0.8,1)
+      gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT)
+      gl.viewport(0, 0, width, height)
+    }
+    render(dt)
+    if (!isWebGL)
+      context.restore()
+  }
 
   return context
 }

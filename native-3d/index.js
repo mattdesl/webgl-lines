@@ -16,11 +16,16 @@ const colors = [
   [0.3, 0.3, 0.3, 1] 
 ].map(premult)
 
+let description = `
+rendering with \`gl.LINES\`  
+touch to rotate
+`
+
 //create GL context
 let gl = require('../base')(render, { 
   context: 'webgl',
   name: __dirname,
-  description: 'rendering with `gl.LINES`'
+  description
 })
 let background = Background(gl, {
   color1: [1, 1, 1],
@@ -59,9 +64,6 @@ function render(dt) {
   let width = gl.drawingBufferWidth
   let height = gl.drawingBufferHeight
 
-  gl.clearColor(0,0,0,1)
-  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT)
-  gl.viewport(0, 0, width, height)
   gl.disable(gl.DEPTH_TEST)
   gl.disable(gl.CULL_FACE)
 

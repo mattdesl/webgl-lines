@@ -1,0 +1,39 @@
+body {
+  font-family: 'Roboto Slab', 'Georgia', serif;
+  font-size: 12px;
+  background: hsl(0, 0%, 90%);
+}
+
+div {
+  padding: 0;
+  margin: 0;
+  line-height: 15px;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 20px;
+}
+
+.name {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+  font-size: 24px;
+}
+
+.description {
+  margin-left: 0px;
+}
+
+code {
+  background: white;
+  padding: 3px 5px;
+  border-bottom: 1px solid gray;
+}

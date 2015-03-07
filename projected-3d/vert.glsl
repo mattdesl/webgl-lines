@@ -19,21 +19,41 @@ void main() {
   vec2 previousScreen = previousProjected.xy / previousProjected.w;
   vec2 nextScreen = nextProjected.xy / nextProjected.w;
 
-  //end point
+  //end point, no next segment
   if (currentScreen == nextScreen) {
     currentScreen = previousScreen;
-  }
-  //start point
-  else if (currentScreen == previousScreen) {
-
+  } else if (currentScreen == previousScreen) {
   }
 
-  //Single segment
-  //find the normal from (B - A)
-  vec2 dir = normalize(nextScreen - currentScreen);
-  vec2 normal = vec2(-dir.y, dir.x);
-  float halfThick = (thickness/2.0) * direction / currentProjected.w;
-  gl_Position = currentProjected + vec4(normal * halfThick, 0.0, 0.0);
+  float PI = 3.14159;
+  float PI2 = PI * 2.0;
+
+  vec2 delta1 = currentScreen - previousScreen;
+  vec2 delta2 = currentScreen - nextScreen;
+
+  float angle1 = atan(delta1.y, delta1.x);
+  float angle2 = atan(delta2.y, delta2.x);
+  if (angle1 - angle2 > PI) {
+    angle2 += PI2;
+  }
+  if (angle2 - angle1 > PI) {
+    angle1 += PI2;
+  }
+  float angle = (angle1 + angle2) / 2.0;
+  vec2 offset = vec2(cos(angle), sin(angle)) * direction * thickness * currentProjected.w;
+  gl_Position = currentProjected + vec4(offset, 0.0, 0.0);
+
+
+  
+
+  // //Single segment
+  // //find the normal from (B - A)
+  // vec2 dir = normalize(nextScreen - currentScreen);
+  // vec2 normal = vec2(-dir.y, dir.x);
+
+  // float halfThick = (thickness/2.0) * direction;
+  // vec4 offset = vec4(normal * halfThick * currentProjected.w, 0.0, 0.0);
+  // gl_Position = currentProjected + offset;
     
   gl_PointSize = 1.0;
 }

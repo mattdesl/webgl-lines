@@ -114,11 +114,9 @@ module.exports = function(gl, opt) {
 
 function relative(offset) {
   return (point, index, list) => {
-    // index = (index + offset)
-    // if (index < 0)
-    //   index = list.length-1
-    // else if (index > list.length-1)
-    //   index = 0
+    // index += offset
+    // if (index < 0) index = list.length-1
+    // if (index > list.length-1) index = 0
     index = clamp(index + offset, 0, list.length-1)
     return list[index]
   }

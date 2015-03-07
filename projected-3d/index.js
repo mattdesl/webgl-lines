@@ -33,8 +33,8 @@ function render(dt) {
   mat4.perspective(projection, Math.PI/4, width/height, 0, 1000)
 
   let path = arc(0, 0, 1, 0, Math.PI*2, false, 64)
-  path.push(path[0])
-  path = [ [-1, -1], [1, -1], [1, 1]]
+  // path.push(path[0])
+  // path = [ [-1, -1], [1, -1], [1, 1]]
   //reset others to identity  
   line.projection = projection
   line.model = rotation
@@ -42,6 +42,6 @@ function render(dt) {
   
   line.color = [0.2, 0.2, 0.2]
   line.update(path)
-  line.thickness = 0.25
+  line.thickness = 0.05
   line.draw()
 }

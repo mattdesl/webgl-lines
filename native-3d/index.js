@@ -4,7 +4,7 @@ const mat4 = require('gl-mat4')
 const wireframe = require('gl-wireframe')
 const premult = require('premultiplied-rgba')
 
-const Background = require('gl-vignette-background')
+
 const rescale = require('rescale-vertices')
 const boundingBox = require('vertices-bounding-box')
 const quantize = require('quantize-vertices')
@@ -27,16 +27,12 @@ let gl = require('../base')(render, {
   name: __dirname,
   description
 })
-let background = Background(gl, {
-  color1: [1, 1, 1],
-  color2: [0.8, 0.8, 0.8]
-})
 
 let projection = mat4.create()
 let model = mat4.create()
 let view = mat4.create()
 
-mat4.translate(view, view, [0, -4, -15])
+mat4.translate(view, view, [1, -5, -20])
 mat4.rotateY(model, model, 0.6)
 
 let shader = require('gl-basic-shader')(gl)
@@ -63,11 +59,6 @@ let meshes = levels.map(x => {
 function render(dt) {
   let width = gl.drawingBufferWidth
   let height = gl.drawingBufferHeight
-
-  gl.disable(gl.DEPTH_TEST)
-  gl.disable(gl.CULL_FACE)
-
-  background.draw()
 
   gl.enable(gl.BLEND)
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)

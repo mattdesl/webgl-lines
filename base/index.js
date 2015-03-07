@@ -7,6 +7,7 @@ const minstache = require('minstache')
 const domify = require('domify')
 const xtend = require('xtend')
 const marked = require('marked')
+const classes = require('dom-classes')
 const template = require('fs').readFileSync(`${__dirname}/template.hbs`, 'utf8')
 
 const DPR = window.devicePixelRatio
@@ -16,6 +17,9 @@ module.exports = function(render, opt) {
 
   let isWebGL = opt.context === 'webgl'
   let context = (isWebGL ? ContextWebGL : Context2D)(opt)
+  if (!context)
+    return fallback(opt)
+
   let resize = () => {
     fit(context.canvas, window, DPR)
     renderRetina(0)
@@ -31,9 +35,8 @@ module.exports = function(render, opt) {
   touches(window, { filtered: true })
     .on('start', () => { engine.start() })
     .on('end', () => { engine.stop() })
-
+  
   require('domready')(() => {
-    document.body.style.margin = '0'
     document.body.appendChild(context.canvas)
     info(opt)
   })
@@ -48,7 +51,7 @@ module.exports = function(render, opt) {
       let gl = context
       let width = gl.drawingBufferWidth
       let height = gl.drawingBufferHeight
-      gl.clearColor(0.8,0.8,0.8,1)
+      gl.clearColor(0.95,0.95,0.95,1)
       gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT)
       gl.viewport(0, 0, width, height)
     }
@@ -60,10 +63,18 @@ module.exports = function(render, opt) {
   return context
 }
 
+function fallback(opt) {
+  info(xtend(opt, { error: true, description: 'sorry, this demo needs WebGL to run!' }))
+}
+
 function info(opt) {
-  opt = xtend({ name: '', description: '' }, opt)
-  opt.name = opt.name.replace(/[\\\/]+/g, '')
-  opt.description = marked(opt.description)
-  let element = domify(minstache(template, opt))
-  document.body.appendChild(element)
+  require('domready')(() => {
+    opt = xtend({ name: '', description: '' }, opt)
+    opt.name = opt.name.replace(/[\\\/]+/g, '')
+    opt.description = marked(opt.description)
+    let element = domify(minstache(template, opt))
+    if (opt.error)
+      classes.add(element, 'error')
+    document.body.appendChild(element)
+  })
 }

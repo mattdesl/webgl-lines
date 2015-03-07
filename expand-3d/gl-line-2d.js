@@ -4,6 +4,7 @@ const createVAO = require('gl-vao')
 const createElements = require('quad-indices')
 const pack = require('array-pack-2d')
 const identity = require('gl-mat4/identity')
+const lineUtils = require('../base/line-utils')
 
 const glslify = require('glslify')
 const createShader = glslify({
@@ -40,13 +41,13 @@ module.exports = function(gl, opt) {
     let normals = tags.map(x => x[0])
     let miters = tags.map(x => x[1])
     count = (path.length-1) * 6
-
+    
     //our vertex attributes (positions, normals) need to be duplicated
     //the only difference is that one has a negative miter length
-    normals = duplicate(normals)
-    miters = duplicate(miters, true)
-    let positions = duplicate(path)
-    let indexUint16 = createIndices(path.length)
+    normals = lineUtils.duplicate(normals)
+    miters = lineUtils.duplicate(miters, true)
+    let positions = lineUtils.duplicate(path)
+    let indexUint16 = lineUtils.createIndices(path.length)
 
     //now update the buffers with float/short data
     positionBuffer.update(pack(positions))
@@ -97,32 +98,4 @@ module.exports = function(gl, opt) {
     arrayType = arrayType || Float32Array
     return createBuffer(gl, new arrayType(), type || gl.ARRAY_BUFFER, gl.DYNAMIC_DRAW)
   }
-}
-
-//we need to duplicate vertex attributes to expand in the shader
-//and mirror the normals
-function duplicate(nestedArray, mirror) {
-  var out = []
-  nestedArray.forEach(x => {
-    let x1 = mirror ? -x : x
-    out.push(x1, x)
-  })
-  return out
-}
-
-//counter-clockwise indices but prepared for duplicate vertices
-function createIndices(length) {
-  let indices = new Uint16Array(length * 6)
-  let c = 0, index = 0
-  for (let j=0; j<length; j++) {
-    let i = index
-    indices[c++] = i + 0 
-    indices[c++] = i + 1 
-    indices[c++] = i + 2 
-    indices[c++] = i + 2 
-    indices[c++] = i + 1 
-    indices[c++] = i + 3 
-    index += 2
-  }
-  return indices
 }

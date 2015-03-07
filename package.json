@@ -31,6 +31,7 @@
     "gl-mat4": "^1.1.2",
     "gl-shader-core": "^2.2.0",
     "gl-vao": "^1.2.0",
+    "gl-vec3": "^1.0.3",
     "gl-vignette-background": "^1.0.4",
     "gl-wireframe": "^1.0.1",
     "glslify": "^1.6.0",

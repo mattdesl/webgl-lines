@@ -29,7 +29,6 @@ module.exports = function(gl, opt) {
 
   //we submit two vertices per point so that 
   //we can expand them away from each other
-
   let indexBuffer = emptyBuffer(Uint16Array, gl.ELEMENT_ARRAY_BUFFER)
   let positionBuffer = emptyBuffer()
   let previousBuffer = emptyBuffer()
@@ -79,7 +78,7 @@ module.exports = function(gl, opt) {
   let projection = identity([])
   let view = identity([])
   let thickness = 1
-  let inner = 0
+  let aspect = 1
   let color = [1,1,1]
 
   return { 
@@ -89,7 +88,7 @@ module.exports = function(gl, opt) {
     projection,
     thickness,
     color,
-    inner,
+    aspect,
 
     draw() {
       shader.bind()
@@ -98,7 +97,7 @@ module.exports = function(gl, opt) {
       shader.uniforms.projection = this.projection
       shader.uniforms.color = this.color
       shader.uniforms.thickness = this.thickness
-      shader.uniforms.inner = this.inner
+      shader.uniforms.aspect = this.aspect
 
       vao.bind()
       vao.draw(gl.TRIANGLES, count)
@@ -114,9 +113,6 @@ module.exports = function(gl, opt) {
 
 function relative(offset) {
   return (point, index, list) => {
-    // index += offset
-    // if (index < 0) index = list.length-1
-    // if (index > list.length-1) index = 0
     index = clamp(index + offset, 0, list.length-1)
     return list[index]
   }

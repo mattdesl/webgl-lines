@@ -5,8 +5,17 @@ attribute vec3 previous;
 uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 view;
+uniform float aspect;
 
 uniform float thickness;
+
+// Miter joins are necessary
+// for sharp edges (like a rectangle)
+// to look good... but they cause artifacts
+// at sharp edges. A more robust implementation
+// would fall back to a different join style
+// if the miter length is above a certain threshold.
+// #define USE_MITER 1
 
 void main() {
   mat4 projViewModel = projection * view * model;
@@ -14,46 +23,45 @@ void main() {
   vec4 currentProjected = projViewModel * vec4(position, 1.0);
   vec4 nextProjected = projViewModel * vec4(next, 1.0);
 
-  //get 2D screen space with W divide
-  vec2 currentScreen = currentProjected.xy / currentProjected.w;
-  vec2 previousScreen = previousProjected.xy / previousProjected.w;
-  vec2 nextScreen = nextProjected.xy / nextProjected.w;
+  //get 2D screen space with W divide and aspect correction
+  vec2 aspectVec = vec2(1.0, 1.0);
+  vec2 currentScreen = currentProjected.xy / currentProjected.w * aspectVec;
+  vec2 previousScreen = previousProjected.xy / previousProjected.w * aspectVec;
+  vec2 nextScreen = nextProjected.xy / nextProjected.w * aspectVec;
 
-  //end point, no next segment
-  if (currentScreen == nextScreen) {
-    currentScreen = previousScreen;
-  } else if (currentScreen == previousScreen) {
+  float halfThick = (thickness/2.0);
+  float len = halfThick;
+  float orientation = direction;
+
+  //starting point uses (next - current)
+  vec2 dir = vec2(0.0);
+  if (currentScreen == previousScreen) {
+    dir = normalize(nextScreen - currentScreen);
+  } 
+  //ending point uses (current - previous)
+  else if (currentScreen == nextScreen) {
+    dir = normalize(currentScreen - previousScreen);
   }
+  //somewhere in middle, needs a join
+  else {
+    vec2 dirA = normalize((currentScreen - previousScreen));
+    #ifdef USE_MITER
+      //find the directions from (C - B) and (B - A)
+      vec2 dirB = normalize((nextScreen - currentScreen));
+      vec2 tangent = normalize(dirA + dirB);
+      vec2 perp = vec2(-dirA.y, dirA.x);
+      vec2 miter = vec2(-tangent.y, tangent.x);
+      dir = tangent;
+      len = halfThick / dot(miter, perp);
+    #else 
+      dir = dirA;
+    #endif
 
-  float PI = 3.14159;
-  float PI2 = PI * 2.0;
-
-  vec2 delta1 = currentScreen - previousScreen;
-  vec2 delta2 = currentScreen - nextScreen;
-
-  float angle1 = atan(delta1.y, delta1.x);
-  float angle2 = atan(delta2.y, delta2.x);
-  if (angle1 - angle2 > PI) {
-    angle2 += PI2;
   }
-  if (angle2 - angle1 > PI) {
-    angle1 += PI2;
-  }
-  float angle = (angle1 + angle2) / 2.0;
-  vec2 offset = vec2(cos(angle), sin(angle)) * direction * thickness * currentProjected.w;
-  gl_Position = currentProjected + vec4(offset, 0.0, 0.0);
+  vec2 normal = vec2(-dir.y, dir.x);
+  normal *= vec2(len/aspect, len);
 
-
-  
-
-  // //Single segment
-  // //find the normal from (B - A)
-  // vec2 dir = normalize(nextScreen - currentScreen);
-  // vec2 normal = vec2(-dir.y, dir.x);
-
-  // float halfThick = (thickness/2.0) * direction;
-  // vec4 offset = vec4(normal * halfThick * currentProjected.w, 0.0, 0.0);
-  // gl_Position = currentProjected + offset;
-    
+  vec4 offset = vec4(normal * orientation, 0.0, 1.0);
+  gl_Position = currentProjected + offset;
   gl_PointSize = 1.0;
 }

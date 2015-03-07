@@ -1,1 +1,4 @@
-browserify $1/index.js | uglifyjs -cm > $1/bundle.js
+for var in "$@"
+do
+    browserify $var/index.js | uglifyjs -cm > $var/bundle.js
+done

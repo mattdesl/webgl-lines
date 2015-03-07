@@ -1,7 +1,7 @@
 body {
   font-family: 'Roboto Slab', 'Georgia', serif;
   font-size: 12px;
-  background: hsl(0, 0%, 90%);
+  background: hsl(0, 0%, 95%);
 }
 
 div {
@@ -31,6 +31,10 @@ canvas {
 
 .description {
   margin-left: 0px;
+}
+
+.error > .description {
+  color: rgb(205, 58, 58);
 }
 
 code {

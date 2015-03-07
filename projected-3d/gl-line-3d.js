@@ -4,7 +4,8 @@ const createVAO = require('gl-vao')
 const createElements = require('quad-indices')
 const pack = require('array-pack-2d')
 const identity = require('gl-mat4/identity')
-const lineUtils = require('../base/line-utils')
+const { duplicate, createIndices } = require('../base/line-utils')
+const clamp = require('clamp')
 
 const glslify = require('glslify')
 const createShader = glslify({
@@ -16,49 +17,59 @@ module.exports = function(gl, opt) {
   let shader = createShader(gl)
   shader.bind()
   shader.attributes.position.location = 0
-  shader.attributes.normal.location = 1
-  shader.attributes.miter.location = 2
-  
+  shader.attributes.direction.location = 1
+  shader.attributes.next.location = 2
+  shader.attributes.previous.location = 3
+
+  //each vertex has the following attribs:
+  // vec3 position   //current point on line
+  // vec3 previous   //previous point on line
+  // vec3 next       //next point on line
+  // float direction //a sign, -1 or 1
+
+  //we submit two vertices per point so that 
+  //we can expand them away from each other
   let indexBuffer = emptyBuffer(Uint16Array, gl.ELEMENT_ARRAY_BUFFER)
   let positionBuffer = emptyBuffer()
-  let normalBuffer = emptyBuffer()
-  let miterBuffer = emptyBuffer()
+  let previousBuffer = emptyBuffer()
+  let nextBuffer = emptyBuffer()
+  let directionBuffer = emptyBuffer()
   let count = 0
   let vao = createVAO(gl)
 
   //in real-world you wouldn't want to create so
   //many typed arrays per frame
-  function update(path, closed) {
-    let tags = getNormals(path, closed)
-
-    //and update our VAO
-    if (closed) {
-        path = path.slice()
-        path.push(path[0])
-        tags.push(tags[0])
+  function update(path) {
+    //ensure 3 component vectors
+    if (path.length > 0 && path[0].length !== 3) {
+      path = path.map(point => {
+        let [x, y, z] = point
+        return [x || 0, y || 0, z || 0]
+      })
     }
-    
-    let normals = tags.map(x => x[0])
-    let miters = tags.map(x => x[1])
+
     count = (path.length-1) * 6
-    
-    //our vertex attributes (positions, normals) need to be duplicated
-    //the only difference is that one has a negative miter length
-    normals = lineUtils.duplicate(normals)
-    miters = lineUtils.duplicate(miters, true)
-    let positions = lineUtils.duplicate(path)
-    let indexUint16 = lineUtils.createIndices(path.length)
+
+    //each pair has a mirrored direction 
+    let direction = duplicate(path.map(x => 1), true)
+    //now get the positional data for each vertex
+    let positions = duplicate(path)
+    let previous = duplicate(path.map(relative(-1)))
+    let next = duplicate(path.map(relative(+1)))
+    let indexUint16 = createIndices(path.length)
 
     //now update the buffers with float/short data
     positionBuffer.update(pack(positions))
-    normalBuffer.update(pack(normals))
-    miterBuffer.update(pack(miters))
+    previousBuffer.update(pack(previous))
+    nextBuffer.update(pack(next))
+    directionBuffer.update(pack(direction))
     indexBuffer.update(indexUint16)
 
     vao.update([ 
-      { buffer: positionBuffer, size: 2 },
-      { buffer: normalBuffer, size: 2 },
-      { buffer: miterBuffer, size: 1 }
+      { buffer: positionBuffer, size: 3 },
+      { buffer: directionBuffer, size: 1 },
+      { buffer: nextBuffer, size: 3 },
+      { buffer: previousBuffer, size: 3 }
     ], indexBuffer)
   }
 
@@ -67,7 +78,7 @@ module.exports = function(gl, opt) {
   let projection = identity([])
   let view = identity([])
   let thickness = 1
-  let inner = 0
+  let aspect = 1
   let color = [1,1,1]
 
   return { 
@@ -77,7 +88,7 @@ module.exports = function(gl, opt) {
     projection,
     thickness,
     color,
-    inner,
+    aspect,
 
     draw() {
       shader.bind()
@@ -86,7 +97,7 @@ module.exports = function(gl, opt) {
       shader.uniforms.projection = this.projection
       shader.uniforms.color = this.color
       shader.uniforms.thickness = this.thickness
-      shader.uniforms.inner = this.inner
+      shader.uniforms.aspect = this.aspect
 
       vao.bind()
       vao.draw(gl.TRIANGLES, count)
@@ -97,5 +108,12 @@ module.exports = function(gl, opt) {
   function emptyBuffer(arrayType, type) {
     arrayType = arrayType || Float32Array
     return createBuffer(gl, new arrayType(), type || gl.ARRAY_BUFFER, gl.DYNAMIC_DRAW)
+  }
+}
+
+function relative(offset) {
+  return (point, index, list) => {
+    index = clamp(index + offset, 0, list.length-1)
+    return list[index]
   }
 }

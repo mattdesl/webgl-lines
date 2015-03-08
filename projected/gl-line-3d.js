@@ -26,7 +26,7 @@ module.exports = function(gl, opt) {
   // vec3 previous   //previous point on line
   // vec3 next       //next point on line
   // float direction //a sign, -1 or 1
-
+  
   //we submit two vertices per point so that 
   //we can expand them away from each other
   let indexBuffer = emptyBuffer(Uint16Array, gl.ELEMENT_ARRAY_BUFFER)
@@ -79,6 +79,7 @@ module.exports = function(gl, opt) {
   let view = identity([])
   let thickness = 1
   let aspect = 1
+  let miter = 0
   let color = [1,1,1]
 
   return { 
@@ -88,6 +89,7 @@ module.exports = function(gl, opt) {
     projection,
     thickness,
     color,
+    miter,
     aspect,
 
     draw() {
@@ -98,6 +100,7 @@ module.exports = function(gl, opt) {
       shader.uniforms.color = this.color
       shader.uniforms.thickness = this.thickness
       shader.uniforms.aspect = this.aspect
+      shader.uniforms.miter = this.miter
 
       vao.bind()
       vao.draw(gl.TRIANGLES, count)

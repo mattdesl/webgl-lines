@@ -17,8 +17,8 @@ const colors = [
 ].map(premult)
 
 let description = `
+_touch to rotate_  
 rendering with \`gl.LINES\`  
-touch to rotate
 `
 
 //create GL context

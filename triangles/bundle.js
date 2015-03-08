@@ -9,6 +9,7 @@ var MAX_POINTS = 8,
 var distance = require("vectors/dist")(2);
 var throttle = require("lodash.throttle");
 var random = require("randf");
+var curve = require("adaptive-bezier-curve");
 
 var stroke = require("extrude-polyline")({
   thickness: 20,
@@ -23,11 +24,11 @@ var context = require("../base")(render, {
 });
 
 var canvas = context.canvas;
-var path = [[240, 155], [260, 148], [284, 150], [296, 166], [311, 183], [335, 190], [353, 180]];
-
 var colors = ["#4f4f4f", "#767676", "#d9662d", "#d98a2d"];
 
+var path = getInitialPath();
 var lastPosition = path[path.length - 1];
+console.log(path);
 
 function render(dt) {
   var width = canvas.width;
@@ -78,8 +79,18 @@ function addPoint(ev, position) {
   lastPosition = position;
 }
 
+//gets a nice curved stroke to start off
+function getInitialPath() {
+  var width2 = window.innerWidth / 2;
+  var height2 = window.innerHeight / 2;
+  var len = 150,
+      off = 100;
+  return curve([width2 - len, height2], [width2 - len / 2, height2 - off], [width2 + len / 2, height2 + off], [width2 + len, height2], 0.1 //scaling factor
+  ).slice(0, MAX_POINTS);
+}
+
 }).call(this,"/triangles")
-},{"../base":5,"extrude-polyline":30,"lodash.throttle":83,"randf":104,"touches":106,"vectors/dist":109}],109:[function(require,module,exports){
+},{"../base":5,"adaptive-bezier-curve":10,"extrude-polyline":30,"lodash.throttle":83,"randf":104,"touches":106,"vectors/dist":109}],109:[function(require,module,exports){
 /**
 
 ### `dist(vec, other)`

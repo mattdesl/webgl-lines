@@ -19,7 +19,7 @@ var rotation = mat4.create();
 var view = mat4.create();
 
 mat4.translate(view, view, [0.5, 0, -3]);
-mat4.scale(rotation, rotation, [0.3, 0.3, 0.3]);
+mat4.scale(rotation, rotation, [0.5, 0.5, 0.5]);
 mat4.rotateY(rotation, rotation, 1);
 var line = createLine(gl);
 
@@ -33,7 +33,7 @@ function render(dt) {
   gl.enable(gl.BLEND);
 
   line.color = [0.2, 0.2, 0.2];
-
+  gl.clear(gl.DEPTH_BUFFER_BIT);
   mat4.rotateY(rotation, rotation, 0.01);
   drawBox(width, height);
   drawCurve(width, height);
@@ -41,7 +41,7 @@ function render(dt) {
 
 //draw a thick-lined rectangle in 3D space
 function drawBox(width, height) {
-  mat4.perspective(projection, Math.PI / 4, width / height, 0, 1000);
+  mat4.perspective(projection, Math.PI / 4, width / height, 0, 100);
 
   var path = [[-1, -1], [1, -1], [1, 1], [-1, 1]];
 
@@ -49,7 +49,7 @@ function drawBox(width, height) {
   line.model = rotation;
   line.view = view;
   line.projection = projection;
-  line.thickness = 0.4;
+  line.thickness = 0.2;
   line.inner = 0;
   line.draw();
 }
@@ -63,18 +63,24 @@ function drawCurve(width, height) {
   line.model = identity;
   line.view = identity;
 
+  var x = width / 4,
+      y = height / 2;
+  var off = 200;
+  var len = 100;
+  var path = curve([x - len, y], [x, y + off], [x + len / 2, y - off], [x + len, y]);
+
   //get a new curve based on animation
-  var x = 100;
-  var y = height / 2;
-  var t = Math.sin(time) * 100 + y;
-  var path = curve([x, y], [x + 150, y + 100 - t], [x + 20, y + t - 50], [x + 200, y]);
+  // let x = 100
+  // let y = height/2
+  // let t = Math.sin(time)*100 + y
+  // let path = curve([x, y], [x+150, y + 100-t], [x+20, y + t - 50], [x+200, y])
 
   //also add in sharp edges to demonstrate miter joins
-  path.push([350, y + 25]);
-  path.unshift([x - 50, y - 25]);
+  path.push([x + len + 50, y + 25]);
+  path.unshift([x - len - 50, y + 25]);
 
   line.update(path);
-  line.thickness = Math.sin(time) * 10 + 30;
+  line.thickness = (Math.sin(time) / 2 + 0.5) * 30 + 10;
   line.inner = Math.sin(time) / 2 + 0.5;
   line.draw();
 }

@@ -6,3 +6,5 @@ node_modules
 .bundle.js
 bundle.min.js
 common.min.js
+index.html
+!base/index.html

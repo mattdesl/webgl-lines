@@ -2,6 +2,7 @@ const MAX_POINTS = 8, MIN_DIST = 20
 const distance = require('vectors/dist')(2)
 const throttle = require('lodash.throttle')
 const random = require('randf')
+const curve = require('adaptive-bezier-curve')
 
 let stroke = require('extrude-polyline')({
   thickness: 20,
@@ -17,8 +18,6 @@ rendering with triangles  `
 })
 
 let canvas = context.canvas
-let path = [[240,155],[260,148],[284,150],[296,166],[311,183],[335,190],[353,180]]
-
 let colors = [
     '#4f4f4f',
     '#767676',
@@ -26,7 +25,9 @@ let colors = [
     '#d98a2d'
 ]
 
+let path = getInitialPath()
 let lastPosition = path[path.length-1]
+console.log(path)
 
 function render(dt) {
   let { width, height } = canvas
@@ -71,4 +72,18 @@ function addPoint(ev, position) {
     path.shift()
   path.push(position)
   lastPosition = position
+}
+
+//gets a nice curved stroke to start off
+function getInitialPath() {
+  let width2 = window.innerWidth/2
+  let height2 = window.innerHeight/2
+  let len = 150, off = 100
+  return curve(
+    [width2-len, height2], 
+    [width2-len/2, height2-off], 
+    [width2+len/2, height2+off], 
+    [width2+len, height2],
+    0.1 //scaling factor
+  ).slice(0, MAX_POINTS)
 }

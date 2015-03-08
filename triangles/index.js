@@ -11,7 +11,8 @@ let stroke = require('extrude-polyline')({
 
 let context = require('../base')(render, {
   name: __dirname,
-  description: 'touch and drag to draw a line with triangles'
+  description: `_toch and drag to draw_  
+rendering with triangles  `
 })
 
 let canvas = context.canvas

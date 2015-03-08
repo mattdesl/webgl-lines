@@ -52,12 +52,20 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
+    "abridge": "^0.5.3",
     "babelify": "^5.0.3",
     "brfs": "^1.4.0",
     "browserify": "^9.0.3",
     "budo": "^1.2.0",
+    "concat-stream": "^1.4.7",
+    "duplexer": "^0.1.1",
+    "factor-bundle": "^2.3.3",
     "open-url": "^2.0.2",
+    "stream-combiner2": "^1.0.2",
+    "through": "^2.3.6",
+    "through2": "^0.6.3",
     "uglify-js": "^2.4.16",
+    "uglify-stream": "^1.1.0",
     "watchify": "git://github.com/mattdesl/watchify#fast"
   },
   "scripts": {
@@ -65,7 +73,7 @@
     "triangles": "./dev.sh triangles",
     "expanded": "./dev.sh expanded",
     "projected": "./dev.sh projected",
-    "build-all": "./build.sh native triangles expanded projected"
+    "build-all": "./factor.js && ./compress.sh native triangles expanded projected"
   },
   "keywords": [],
   "repository": {

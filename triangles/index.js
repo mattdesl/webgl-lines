@@ -6,6 +6,7 @@ const random = require('randf')
 let stroke = require('extrude-polyline')({
   thickness: 20,
   join: 'miter',
+  miterLimit: 2,
   cap: 'square'
 })
 

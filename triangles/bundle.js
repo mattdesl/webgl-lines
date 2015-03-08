@@ -22,7 +22,8 @@ var context = require("../base")(render, {
 });
 
 var canvas = context.canvas;
-var path = [[40, 105], [60, 98], [84, 100], [96, 116], [111, 133], [135, 140], [153, 130]];
+var path = [[240, 155], [260, 148], [284, 150], [296, 166], [311, 183], [335, 190], [353, 180]];
+
 var colors = ["#4f4f4f", "#767676", "#d9662d", "#d98a2d"];
 
 var lastPosition = path[path.length - 1];

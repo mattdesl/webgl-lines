@@ -1,4 +1,5 @@
 for var in "$@"
 do
-    browserify $var/index.js | uglifyjs -cm > $var/bundle.js
+    cp base/index.html $var/index.html && \
+      browserify $var/index.js | uglifyjs -cm > $var/bundle.js
 done

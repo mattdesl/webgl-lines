@@ -61,11 +61,11 @@
     "watchify": "git://github.com/mattdesl/watchify#fast"
   },
   "scripts": {
-    "native-3d": "./dev.sh native-3d",
-    "triangles-2d": "./dev.sh triangles-2d",
-    "expand-3d": "./dev.sh expand-3d",
-    "projected-3d": "./dev.sh projected-3d",
-    "build-all": "./build.sh native-3d triangles-2d expand-3d projected-3d"
+    "native": "./dev.sh native",
+    "triangles": "./dev.sh triangles",
+    "expanded": "./dev.sh expanded",
+    "projected": "./dev.sh projected",
+    "build-all": "./build.sh native triangles expanded projected"
   },
   "keywords": [],
   "repository": {

@@ -4,11 +4,14 @@ const mat4 = require('gl-mat4')
 const transformMat4 = require('gl-vec3/transformMat4')
 const arc = require('arc-to')
 
+let description = `_touch to animate paths_  
+screen-space projected lines  
+miter join computed in vertex shader`
+
 let gl = require('../base')(render, {
   name: __dirname,
   context: 'webgl',
-  description: `projected and miter-joined in screen space  
-  touch to animate paths`
+  description: description
 })
 
 let time = 0

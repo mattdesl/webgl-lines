@@ -30,8 +30,6 @@ module.exports = function(render, opt) {
   
   let engine = loop(renderRetina)
 
-  // window.addEventListener('mouseover', () => { engine.start() })
-  // window.addEventListener('mouseout', () => { engine.stop() })
   touches(window, { filtered: true })
     .on('start', () => { engine.start() })
     .on('end', () => { engine.stop() })
@@ -42,16 +40,16 @@ module.exports = function(render, opt) {
   })
 
   function renderRetina(dt) {
-    if (!isWebGL) {
+    if (!isWebGL) { //scale the context...
       let { width, height } = context.canvas
       context.clearRect(0, 0, width, height)
       context.save()
       context.scale(DPR, DPR)
-    } else {
+    } else { //draw WebGL buffer
       let gl = context
       let width = gl.drawingBufferWidth
       let height = gl.drawingBufferHeight
-      gl.clearColor(0.95,0.95,0.95,1)
+      gl.clearColor(0, 0, 0, 0)
       gl.clear(gl.DEPTH_BUFFER_BIT | gl.COLOR_BUFFER_BIT)
       gl.viewport(0, 0, width, height)
     }

@@ -5,8 +5,10 @@ const mat4 = require('gl-mat4')
 let gl = require('../base')(render, {
   name: __dirname,
   context: 'webgl',
-  description: `lines expanded in a vertex shader  
-  touch to animate`
+  description: `
+_touch to animate_  
+2D lines expanded in a vertex shader  
+`
 })
 
 let time = 0

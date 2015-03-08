@@ -1,5 +1,6 @@
 body {
   font-family: 'Roboto Slab', 'Georgia', serif;
+  -webkit-font-smoothing: antialiased;
   font-size: 12px;
   background: hsl(0, 0%, 95%);
 }
@@ -27,10 +28,31 @@ canvas {
 .name {
   font-family: 'Roboto', 'Helvetica', sans-serif;
   font-size: 24px;
+  line-height: 5px;
+  margin-top: 10px;
 }
 
 .description {
   margin-left: 0px;
+}
+
+em {
+  color: rgb(90, 90, 90);
+  /*color: rgb(205, 73, 73);*/
+  display: inline-block;
+  margin-bottom: 22px;
+  font-size: 14px;
+  font-style: normal;
+}
+em::after {
+  content: ' ';
+  width: 40px;
+  height: 1px;
+  display: block;
+  position: relative;
+  top: 13px;
+  left: 0;
+  background: rgb(202, 202, 202);
 }
 
 .error > .description {
@@ -38,7 +60,7 @@ canvas {
 }
 
 code {
-  background: white;
+  background: rgb(250, 250, 250);
   padding: 3px 5px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgb(202, 202, 202);
 }

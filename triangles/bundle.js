@@ -28,7 +28,6 @@ var colors = ["#4f4f4f", "#767676", "#d9662d", "#d98a2d"];
 
 var path = getInitialPath();
 var lastPosition = path[path.length - 1];
-console.log(path);
 
 function render(dt) {
   var width = canvas.width;
@@ -59,7 +58,7 @@ function render(dt) {
 var adder = throttle(addPoint, 30);
 var dragging = false;
 
-require("touches")(window, { filtered: true }).on("move", adder).on("start", function () {
+require("touches")(document, { filtered: true }).on("move", adder).on("start", function () {
   //clear path on click
   path.length = 0;
   stroke.thickness = random(10, 30);
@@ -83,7 +82,7 @@ function addPoint(ev, position) {
 function getInitialPath() {
   var width2 = window.innerWidth / 2;
   var height2 = window.innerHeight / 2;
-  var len = 150,
+  var len = Math.min(100, window.innerWidth * 0.25),
       off = 100;
   return curve([width2 - len, height2], [width2 - len / 2, height2 - off], [width2 + len / 2, height2 + off], [width2 + len, height2], 0.1 //scaling factor
   ).slice(0, MAX_POINTS);

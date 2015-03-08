@@ -25,13 +25,20 @@ module.exports = function(render, opt) {
     renderRetina(0)
   }
 
+  context.canvas.oncontextmenu = function() {
+    return false
+  }
+
   window.addEventListener('resize', resize, false)
   process.nextTick(resize)
   
   let engine = loop(renderRetina)
 
   touches(window, { filtered: true })
-    .on('start', () => { engine.start() })
+    .on('start', (ev) => { 
+      ev.preventDefault()
+      engine.start() 
+    })
     .on('end', () => { engine.stop() })
   
   require('domready')(() => {

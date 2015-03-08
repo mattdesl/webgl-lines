@@ -27,7 +27,6 @@ let colors = [
 
 let path = getInitialPath()
 let lastPosition = path[path.length-1]
-console.log(path)
 
 function render(dt) {
   let { width, height } = canvas
@@ -51,7 +50,7 @@ function render(dt) {
 let adder = throttle(addPoint, 30)
 let dragging = false
 
-require('touches')(window, { filtered: true })
+require('touches')(document, { filtered: true })
   .on('move', adder)
   .on('start', () => { //clear path on click
     path.length = 0
@@ -78,7 +77,7 @@ function addPoint(ev, position) {
 function getInitialPath() {
   let width2 = window.innerWidth/2
   let height2 = window.innerHeight/2
-  let len = 150, off = 100
+  let len = Math.min(100, window.innerWidth*0.25), off = 100
   return curve(
     [width2-len, height2], 
     [width2-len/2, height2-off], 

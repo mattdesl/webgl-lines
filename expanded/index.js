@@ -65,6 +65,7 @@ function drawCurve(width, height) {
   line.model = identity
   line.view = identity
 
+  //get a bezier curve
   let x = width/4, y = height/2
   let off = 200
   let len = 100
@@ -74,12 +75,6 @@ function drawCurve(width, height) {
     [x+len/2, y-off],
     [x+len, y]
   )
-
-  //get a new curve based on animation
-  // let x = 100
-  // let y = height/2
-  // let t = Math.sin(time)*100 + y
-  // let path = curve([x, y], [x+150, y + 100-t], [x+20, y + t - 50], [x+200, y])
 
   //also add in sharp edges to demonstrate miter joins
   path.push([x+len+50, y+25])

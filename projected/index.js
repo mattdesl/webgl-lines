@@ -5,7 +5,7 @@ const transformMat4 = require('gl-vec3/transformMat4')
 const arc = require('arc-to')
 
 let description = `_touch to animate paths_  
-screen-space projected lines  
+3D lines expanded in screen-space  
 miter join computed in vertex shader`
 
 let gl = require('../base')(render, {

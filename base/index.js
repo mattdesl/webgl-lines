@@ -34,7 +34,7 @@ module.exports = function(render, opt) {
   
   let engine = loop(renderRetina)
 
-  touches(window, { filtered: true })
+  touches(document, { filtered: true })
     .on('start', (ev) => { 
       ev.preventDefault()
       engine.start() 

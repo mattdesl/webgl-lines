@@ -19,7 +19,7 @@ let view = mat4.create()
 
 mat4.translate(view, view, [0.5, 0.0, -3])
 mat4.scale(rotation, rotation, [0.5, 0.5, 0.5])
-mat4.rotateY(rotation, rotation, 1)
+mat4.rotateY(rotation, rotation, -0.5)
 let line = createLine(gl)
 
 function render(dt) {

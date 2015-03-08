@@ -51,7 +51,8 @@ void main() {
     }
   }
   vec2 normal = vec2(-dir.y, dir.x);
-  normal *= vec2(len/aspect, len) / 2.0;
+  normal *= len/2.0;
+  normal.x /= aspect;
 
   vec4 offset = vec4(normal * orientation, 0.0, 1.0);
   gl_Position = currentProjected + offset;

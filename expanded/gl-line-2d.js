@@ -1,7 +1,7 @@
 const getNormals = require('polyline-normals')
 const createBuffer = require('gl-buffer')
 const createVAO = require('gl-vao')
-const createElements = require('quad-indices')
+// const createElements = require('quad-indices')
 const pack = require('array-pack-2d')
 const identity = require('gl-mat4/identity')
 const lineUtils = require('../base/line-utils')

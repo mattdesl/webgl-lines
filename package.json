@@ -4,6 +4,7 @@
   "description": "some interactive content for a blog post",
   "main": "index.js",
   "license": "MIT",
+  "private": true,
   "author": {
     "name": "Matt DesLauriers",
     "email": "dave.des@gmail.com",
@@ -26,13 +27,11 @@
     "garnish": "^2.1.0",
     "gl-basic-shader": "^1.2.2",
     "gl-buffer": "^2.1.1",
-    "gl-checker-background": "^1.0.0",
     "gl-geometry": "^1.0.3",
     "gl-mat4": "^1.1.2",
     "gl-shader-core": "^2.2.0",
     "gl-vao": "^1.2.0",
     "gl-vec3": "^1.0.3",
-    "gl-vignette-background": "^1.0.4",
     "gl-wireframe": "^1.0.1",
     "glslify": "^1.6.0",
     "lodash.throttle": "^3.0.1",
@@ -52,18 +51,12 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "abridge": "^0.5.3",
     "babelify": "^5.0.3",
     "brfs": "^1.4.0",
     "browserify": "^9.0.3",
     "budo": "^1.2.0",
-    "concat-stream": "^1.4.7",
-    "duplexer": "^0.1.1",
     "factor-bundle": "^2.3.3",
     "open-url": "^2.0.2",
-    "stream-combiner2": "^1.0.2",
-    "through": "^2.3.6",
-    "through2": "^0.6.3",
     "uglify-js": "^2.4.16",
     "uglify-stream": "^1.1.0",
     "watchify": "git://github.com/mattdesl/watchify#fast"
@@ -73,7 +66,7 @@
     "triangles": "./dev.sh triangles",
     "expanded": "./dev.sh expanded",
     "projected": "./dev.sh projected",
-    "build-all": "./factor.js && ./compress.sh native triangles expanded projected"
+    "build-all": "mkdir -p build && ./factor.js && ./compress.sh native triangles expanded projected"
   },
   "keywords": [],
   "repository": {

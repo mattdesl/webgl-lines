@@ -97,7 +97,7 @@ function drawMitered() {
 }
 
 }).call(this,"/projected")
-},{"../base":5,"./gl-line-3d":115,"adaptive-bezier-curve":10,"arc-to":11,"gl-mat4":48,"gl-vec3/transformMat4":78}],115:[function(require,module,exports){
+},{"../base":5,"./gl-line-3d":123,"adaptive-bezier-curve":10,"arc-to":11,"gl-mat4":66,"gl-vec3/transformMat4":92}],123:[function(require,module,exports){
 "use strict";
 
 var _slicedToArray = function(arr, i) {
@@ -122,7 +122,6 @@ var _slicedToArray = function(arr, i) {
 var getNormals = require("polyline-normals");
 var createBuffer = require("gl-buffer");
 var createVAO = require("gl-vao");
-var createElements = require("quad-indices");
 var pack = require("array-pack-2d");
 var identity = require("gl-mat4/identity");
 var _require = require("../base/line-utils");
@@ -234,7 +233,7 @@ function relative(offset) {
         return list[index];
     };
 }
-},{"../base/line-utils":6,"array-pack-2d":12,"clamp":22,"gl-buffer":34,"gl-mat4/identity":47,"gl-vao":70,"glslify":81,"glslify/adapter.js":80,"polyline-normals":96,"quad-indices":98}],22:[function(require,module,exports){
+},{"../base/line-utils":6,"array-pack-2d":12,"clamp":22,"gl-buffer":40,"gl-mat4/identity":65,"gl-vao":91,"glslify":95,"glslify/adapter.js":94,"polyline-normals":101}],22:[function(require,module,exports){
 module.exports = clamp
 
 function clamp(value, min, max) {
@@ -243,7 +242,7 @@ function clamp(value, min, max) {
     : (value < max ? max : value > min ? min : value)
 }
 
-},{}],78:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = transformMat4;
 
 /**

@@ -81,12 +81,11 @@ function drawCurve(width, height) {
 }
 
 }).call(this,"/expanded")
-},{"../base":5,"./gl-line-2d":7,"adaptive-bezier-curve":10,"gl-mat4":48}],7:[function(require,module,exports){
+},{"../base":5,"./gl-line-2d":7,"adaptive-bezier-curve":10,"gl-mat4":66}],7:[function(require,module,exports){
 "use strict";
 var getNormals = require("polyline-normals");
 var createBuffer = require("gl-buffer");
 var createVAO = require("gl-vao");
-var createElements = require("quad-indices");
 var pack = require("array-pack-2d");
 var identity = require("gl-mat4/identity");
 var lineUtils = require("../base/line-utils");
@@ -180,4 +179,4 @@ module.exports = function(gl, opt) {
         return createBuffer(gl, new arrayType(), type || gl.ARRAY_BUFFER, gl.DYNAMIC_DRAW);
     }
 };
-},{"../base/line-utils":6,"array-pack-2d":12,"gl-buffer":34,"gl-mat4/identity":47,"gl-vao":70,"glslify":81,"glslify/adapter.js":80,"polyline-normals":96,"quad-indices":98}]},{},[1]);
+},{"../base/line-utils":6,"array-pack-2d":12,"gl-buffer":40,"gl-mat4/identity":65,"gl-vao":91,"glslify":95,"glslify/adapter.js":94,"polyline-normals":101}]},{},[1]);

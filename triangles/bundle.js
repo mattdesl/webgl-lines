@@ -89,7 +89,7 @@ function getInitialPath() {
 }
 
 }).call(this,"/triangles")
-},{"../base":5,"adaptive-bezier-curve":10,"extrude-polyline":30,"lodash.throttle":83,"randf":104,"touches":106,"vectors/dist":109}],109:[function(require,module,exports){
+},{"../base":5,"adaptive-bezier-curve":10,"extrude-polyline":28,"lodash.throttle":96,"randf":115,"touches":117,"vectors/dist":119}],119:[function(require,module,exports){
 /**
 
 ### `dist(vec, other)`
@@ -126,7 +126,7 @@ function generator(dims) {
   return Function(body.join('\n'))()
 }
 
-},{}],104:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 function random(start, end) {
     var n0 = typeof start === 'number',
         n1 = typeof end === 'number'
@@ -142,7 +142,7 @@ function random(start, end) {
 }
 
 module.exports = random
-},{}],83:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -251,7 +251,7 @@ function isObject(value) {
 
 module.exports = throttle;
 
-},{"lodash.debounce":84}],84:[function(require,module,exports){
+},{"lodash.debounce":97}],97:[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -494,7 +494,7 @@ function isObject(value) {
 
 module.exports = debounce;
 
-},{"lodash.isnative":85}],85:[function(require,module,exports){
+},{"lodash.isnative":98}],98:[function(require,module,exports){
 /**
  * lodash 3.0.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -612,7 +612,7 @@ function escapeRegExp(string) {
 
 module.exports = isNative;
 
-},{}],30:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var number = require('as-number')
 var vec = require('./vecutil')
 
@@ -798,7 +798,7 @@ function extrusions(positions, point, normal, scale) {
 }
 
 module.exports = Stroke
-},{"./vecutil":32,"as-number":31,"polyline-miter-util":95}],32:[function(require,module,exports){
+},{"./vecutil":38,"as-number":29,"polyline-miter-util":37}],38:[function(require,module,exports){
 function clone(arr) {
     return [arr[0], arr[1]]
 }
@@ -814,7 +814,7 @@ module.exports = {
     scaleAndAdd: require('gl-vec2/scaleAndAdd'),
     dot: require('gl-vec2/dot')
 }
-},{"gl-vec2/copy":72,"gl-vec2/dot":73,"gl-vec2/scaleAndAdd":75}],75:[function(require,module,exports){
+},{"gl-vec2/copy":31,"gl-vec2/dot":32,"gl-vec2/scaleAndAdd":34}],34:[function(require,module,exports){
 module.exports = scaleAndAdd
 
 /**
@@ -831,7 +831,7 @@ function scaleAndAdd(out, a, b, scale) {
     out[1] = a[1] + (b[1] * scale)
     return out
 }
-},{}],72:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = copy
 
 /**
@@ -846,7 +846,7 @@ function copy(out, a) {
     out[1] = a[1]
     return out
 }
-},{}],31:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function numtype(num, def) {
 	return typeof num === 'number'
 		? num 

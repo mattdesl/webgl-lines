@@ -66,7 +66,7 @@
     "triangles": "./dev.sh triangles",
     "expanded": "./dev.sh expanded",
     "projected": "./dev.sh projected",
-    "build-all": "./factor.js && ./compress.sh native triangles expanded projected"
+    "build-all": "mkdir -p build && ./factor.js && ./compress.sh native triangles expanded projected"
   },
   "keywords": [],
   "repository": {

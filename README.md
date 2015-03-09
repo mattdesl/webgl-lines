@@ -2,7 +2,7 @@
 
 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
-Some interactive content for a blog post.
+Some interactive content for [a blog post](http://mattdesl.svbtle.com/drawing-lines-is-hard).
 
 Demos:
 

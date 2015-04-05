@@ -33,7 +33,7 @@
     "gl-vao": "^1.2.0",
     "gl-vec3": "^1.0.3",
     "gl-wireframe": "^1.0.1",
-    "glslify": "^1.6.0",
+    "glslify": "1.6.0",
     "lodash.throttle": "^3.0.1",
     "marked": "^0.3.3",
     "minstache": "^1.2.0",
